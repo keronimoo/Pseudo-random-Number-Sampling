@@ -1,0 +1,80 @@
+import numpy as np
+from matplotlib import pyplot as plt
+# Part a (Inverse Transform Method)
+U = []
+Xa = []
+av_Xa = []
+vr_Xa = []
+
+# Populate the given arrays.
+### YOUR CODE HERE ###
+
+def f_inverse(x):
+    return np.sqrt(x) # inverse of given Cumulative Distributive Function
+for j in range(50000):
+    u= np.random.rand() #uniform random variables
+    x=f_inverse(u)
+    U.append(u)
+    Xa.append(x)
+    av_Xa.append(np.mean(Xa))
+    vr_Xa.append((np.std(Xa))**2)
+
+# Inspect the following plots.
+plt.figure() #figure 1
+for i in range(len(Xa)):
+    plt.plot([Xa[i],U[i]],[1,1.2])
+plt.figure() #figure 2
+hU = plt.hist(U,100,alpha=0.5,density=True)
+hXa = plt.hist(Xa,100,alpha=0.5,density=True)
+plt.figure() #figure 3
+plt.plot(np.cumsum(hU[0]))
+plt.plot(np.cumsum(hXa[0]))
+
+
+# Plot the average and variance values.
+### YOUR CODE HERE ###
+plt.figure() #figure 4
+plt.plot(np.linspace(0 , 1 , 50000) ,av_Xa) # Expected Value / Figure 4
+plt.figure() #figure 5
+plt.plot(np.linspace(0 , 1 , 50000) ,vr_Xa) # Variance  / Figure 5
+
+
+# Part b (Rejection Method)
+Xb = []
+av_Xb = []
+vr_Xb = []
+
+# Populate the given arrays.
+### YOUR CODE HERE ###
+
+c= 2
+a= 0
+b= 1
+def fb(x):
+    return 2*x #pdf of given cumulative density function
+k= 0
+while k < 50000:
+    u = np.random.rand()
+    v = np.random.rand()
+    x = (b-a)*u+a
+    y = c*v
+    if y <= fb(x):
+        Xb.append(x)
+        av_Xb.append(np.mean(Xb))
+        vr_Xb.append((np.std(Xb))**2)
+        k = k + 1
+
+
+
+#Inspect the following plots.
+plt.figure() #figure 6
+hXb = plt.hist(Xb,100,density=True)
+plt.figure() #figure 7
+plt.plot(np.cumsum(hXb[0]))
+# Plot the average and variance values.
+### YOUR CODE HERE ###
+plt.figure() #figure 8
+plt.plot(np.linspace(0 , 1 , 50000) ,av_Xb) #expected value / figure 8
+plt.figure() #figure 9
+plt.plot(np.linspace(0 , 1 , 50000) ,vr_Xb) #variance / figure 9
+plt.show()
